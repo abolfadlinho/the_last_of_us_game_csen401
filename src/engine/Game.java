@@ -15,6 +15,7 @@ public class Game {
 	
 	public static void loadHeroes(String filePath) throws Exception {
 		//BufferedReader reader = null;
+		//File reading was understood through this video: https://youtu.be/zKDmzKaAQro
 		String line = "";
 		BufferedReader reader = new BufferedReader(new FileReader(filePath));
 		while((line = reader.readLine()) != null) {
