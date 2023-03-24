@@ -14,8 +14,7 @@ public class Game {
 	public static Cell[][] map;
 	
 	public static void loadHeroes(String filePath) throws Exception {
-		//BufferedReader reader = null;
-		//File reading was understood through this video: https://youtu.be/zKDmzKaAQro
+		//https://youtu.be/zKDmzKaAQro
 		String line = "";
 		BufferedReader reader = new BufferedReader(new FileReader(filePath));
 		while((line = reader.readLine()) != null) {
@@ -28,10 +27,10 @@ public class Game {
 					availableHeroes.add(new Medic(row[0], Integer.parseInt(row[2]), Integer.parseInt(row[4]), Integer.parseInt(row[3])));
 					break;
 				case "EXP" :
-						availableHeroes.add(new Explorer(row[0], Integer.parseInt(row[2]), Integer.parseInt(row[4]), Integer.parseInt(row[3])));
-						break;
-					default:
-						break;
+					availableHeroes.add(new Explorer(row[0], Integer.parseInt(row[2]), Integer.parseInt(row[4]), Integer.parseInt(row[3])));
+					break;
+				default:
+					break;
 				}
 			}
 			reader.close();

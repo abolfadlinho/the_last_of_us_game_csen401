@@ -6,6 +6,7 @@ public class CharacterCell extends Cell {
 	private boolean isSafe;
 	
 	public CharacterCell(Character character) {
+		super();
 		this.setCharacter(character);
 	}
 

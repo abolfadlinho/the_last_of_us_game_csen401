@@ -1,8 +1,6 @@
 package model.characters;
 import java.util.*;
 
-import exceptions.NoAvailableResourcesException;
-import model.collectibles.Collectible;
 import model.collectibles.Supply;
 import model.collectibles.Vaccine;
 
@@ -49,7 +47,4 @@ public abstract class Hero extends Character  {
 	public ArrayList<Supply> getSupplyInventory() {
 		return supplyInventory;
 	}
-	
-	public void useInventory(Collectible c) throws NoAvailableResourcesException{
-	}	
 }

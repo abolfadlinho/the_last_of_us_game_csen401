@@ -6,6 +6,9 @@ public abstract class Cell {
 	public Cell() {
 		
 	}
+	public Cell(boolean isVisible){
+		this.isVisible = isVisible;
+	}
 
 	public boolean isVisible() {
 		return isVisible;
