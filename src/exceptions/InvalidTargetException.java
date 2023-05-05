@@ -1,14 +1,11 @@
 package exceptions;
 
-public class InvalidTargetException extends GameActionException{
+public class InvalidTargetException extends GameActionException {
 
-	private static final long serialVersionUID = 1L;
-
-	public InvalidTargetException(){
-		super();
+	public InvalidTargetException() {
+		// TODO Auto-generated constructor stub
 	}
-	
-	public InvalidTargetException(String s){
-		super(s);
+	public InvalidTargetException(String message) {
+		super(message);
 	}
 }

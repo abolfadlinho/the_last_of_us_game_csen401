@@ -1,14 +1,11 @@
 package exceptions;
 
-public class MovementException extends GameActionException{
-	
-	private static final long serialVersionUID = 1L;
+public class MovementException extends GameActionException {
 
-	public MovementException(){
-		super();
+	public MovementException() {
+		// TODO Auto-generated constructor stub
 	}
-	
-	public MovementException(String s){
-		super(s);
+	public MovementException(String message) {
+		super(message);
 	}
 }

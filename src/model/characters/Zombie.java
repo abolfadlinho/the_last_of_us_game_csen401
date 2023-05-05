@@ -1,19 +1,29 @@
 package model.characters;
 
-public class Zombie extends Character{
-	private static int ZOMBIES_COUNT=0;
-	
-	public Zombie(){
-		super("Zombie " + (++ZOMBIES_COUNT), 40, 10);	
-	}
+import java.awt.Point;
 
-	public static int getZOMBIES_COUNT() {
-		return ZOMBIES_COUNT;
-	}
+import model.world.*;
+import engine.Game;
+import helper.Methods;
 
-	public static void setZOMBIES_COUNT(int zOMBIES_COUNT) {
-		ZOMBIES_COUNT = zOMBIES_COUNT;
+
+
+public class Zombie extends Character {
+	static int ZOMBIES_COUNT = 1;
+	
+	public Zombie() {
+		super("Zombie " + ZOMBIES_COUNT, 40, 10);
+		ZOMBIES_COUNT++;
 	}
 	
+	public void onCharacterDeath(){
+		super.onCharacterDeath();
+		Zombie newZombie = new Zombie();
+		Point rand = Methods.generateRandomEmptyPoint();	
+		Game.map[rand.x][rand.y] = new CharacterCell(newZombie);
+		ZOMBIES_COUNT--;
+		super.setLocation(rand);
+	}
 }
+
 

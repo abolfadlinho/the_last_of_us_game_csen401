@@ -1,14 +1,13 @@
 package exceptions;
 
-public class NoAvailableResourcesException extends GameActionException{
+public class NoAvailableResourcesException extends GameActionException {
 
-	private static final long serialVersionUID = 1L;
-
-	public NoAvailableResourcesException(){
-		super();
+	public NoAvailableResourcesException() {
+		// TODO Auto-generated constructor stub
 	}
 	
-	public NoAvailableResourcesException(String s){
-		super(s);
+	public NoAvailableResourcesException(String message) {
+		super(message);
 	}
+
 }

@@ -1,14 +1,13 @@
 package exceptions;
 
-abstract public class GameActionException extends Exception{
-
-	private static final long serialVersionUID = 1L;
+public abstract class GameActionException extends Exception{
 
 	public GameActionException() {
+		// TODO Auto-generated constructor stub
 		super();
 	}
-	
-	public GameActionException(String s){
-		super(s);
+	public GameActionException(String message) {
+		super(message);
 	}
+
 }

@@ -1,14 +1,13 @@
 package exceptions;
 
-public class NotEnoughActionsException extends GameActionException{
+public class NotEnoughActionsException extends GameActionException {
 
-	private static final long serialVersionUID = 1L;
-
-	public NotEnoughActionsException(){
-		super();
+	public NotEnoughActionsException() {
+		// TODO Auto-generated constructor stub
 	}
 	
-	public NotEnoughActionsException(String s){
-		super(s);
+	public NotEnoughActionsException(String message) {
+		super(message);
 	}
+
 }
