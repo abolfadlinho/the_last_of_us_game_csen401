@@ -81,22 +81,26 @@ public abstract class Character {
 		return attackDmg;
 	}
 	
-	public void attack() throws NotEnoughActionsException,InvalidTargetException{		
-		if(target==this||target==null||!Methods.isAdj(this.location, this.target))
+	public void attack() throws NotEnoughActionsException,InvalidTargetException{	
+		if(target==null||target==this)
 			throw new InvalidTargetException("Cannot attack selected target");
+//		if(target.getLocation().x<location.x-1||target.getLocation().y<location.y-1||
+//		target.getLocation().x>location.x+1||target.getLocation().y>location.y+1)
+		if(!Methods.isAdj(location,target))
+			throw new InvalidTargetException("Out of location");
 		//Added because of hero class
 		Character c = this.getTarget();
 		c.setCurrentHp(c.getCurrentHp()-this.getAttackDmg());
 		c.defend(this);
 	}
 	
-	public void defend(Character c) throws InvalidTargetException{
+	public void defend(Character c){
 		setTarget(c);
 		target.setCurrentHp(target.getCurrentHp()-(this.getAttackDmg()/2));
 	}
 	
 	public void onCharacterDeath() {
 		Game.map[this.location.x][this.location.y] = new CharacterCell(null);
-		this.location = new Point(-1,-1);
+		this.location = new Point(-2,-2);
 	}
 }

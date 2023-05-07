@@ -18,6 +18,8 @@ public class Medic extends Hero {
 	public void useSpecial() throws NoAvailableResourcesException, NotEnoughActionsException, InvalidTargetException{
 		if(super.getTarget() instanceof Zombie)
 			throw new InvalidTargetException("Cannot heal zombie");
+		if(!Methods.isAdj(super.getLocation(),super.getTarget()))
+			throw new InvalidTargetException("omak");
 		super.useSpecial();
 		super.getTarget().setCurrentHp(getMaxHp());
 	}

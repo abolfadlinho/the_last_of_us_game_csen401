@@ -57,6 +57,10 @@ public class Game {
 	}
 	
 	public static void startGame(Hero h){
+		for(int x=0;x<15;x++){
+			for(int y=0;y<15;y++)
+				map[x][y] = new CharacterCell(null);
+		}
 		CollectibleCell col;
 		Point p;
 		TrapCell trapCell;
@@ -77,6 +81,7 @@ public class Game {
 		for (int i=0;i<10;i++){
 			p = Methods.generateRandomEmptyPoint();
 			zombie = new Zombie();
+			zombies.add(zombie);
 			zombieCell = new CharacterCell(zombie);
 			zombie.setLocation(p);
 			map[p.x][p.y] = zombieCell;
@@ -91,24 +96,28 @@ public class Game {
 		heroes.add(h);
 		h.setLocation(new Point(0,0));
 		map[0][0] = new CharacterCell(h);
+		map[0][0].setVisible(true);
+		map[0][1].setVisible(true);
+		map[1][0].setVisible(true);
+		map[1][1].setVisible(true);
 	}
 	
 	public static boolean checkWin(){
-		//Check if there is vaccines left
 		for (int i=0;i<15;i++){
-			for (int j=0;i<15;i++){
+			for (int j=0;j<15;j++){
 				if(map[i][j] instanceof CollectibleCell){
 					if(((CollectibleCell)map[i][j]).getCollectible() instanceof Vaccine)
 						return false;
 				}
 			} 
 		}
+		//No vaccines on map
 		for (int i=0;i<heroes.size();i++){
 			if(heroes.get(i).getVaccineInventory().size()>0)
 				return false;
 		}
-		//No vaccines on map
-		//Then check for inventory of all heroes for instanceof vaccines, if there is return false
+		
+		//No vaccines in inventory
 		if (heroes.size()<5)
 			return false;
 		return true;
@@ -118,12 +127,17 @@ public class Game {
 		Cell cell;
 		Zombie zombie;
 		Character hero;
+		ArrayList<Cell> adj;
+		//All zombies attack
+//		for(int i=0;i<zombies.size();i++){
+//			zombies.get(i).attack();
+//		}
 		for (int x=0;x<15;x++){
 			for(int y=0;y<15;y++){
 				cell = map[x][y];
 				if (cell instanceof CharacterCell){
 					if (((CharacterCell)cell).getCharacter() instanceof Zombie){
-						ArrayList<Cell> adj = Methods.getAdjacent(new Point(x,y));
+						adj = Methods.getAdjacent(new Point(x,y));
 						for(int i=0;i<adj.size();i++){
 							if(adj.get(i) instanceof CharacterCell && ((CharacterCell)adj.get(i)).getCharacter() != null && !(((CharacterCell)adj.get(i)).getCharacter() instanceof Zombie)){
 								zombie = (Zombie)((CharacterCell)cell).getCharacter();
@@ -137,17 +151,43 @@ public class Game {
 				}
 			}
 		}
-		Point p = Methods.generateRandomEmptyPoint();
-		zombie = new Zombie();
-		map[p.x][p.y] = new CharacterCell(zombie);
-		zombie.setLocation(p);
+		//Spawn Zombie at random location / Cannot exceede 10 zombies said in failure 3
+		Point p;
+		if(zombies.size()<10){
+			p = Methods.generateRandomEmptyPoint();
+			zombie = new Zombie();
+			zombies.add(zombie);
+			map[p.x][p.y] = new CharacterCell(zombie);
+			zombie.setLocation(p);
+		}
+		//Reset Map visibilty
+		for(int x=0;x<15;x++){
+			for(int y=0;y<15;y++){
+				map[x][y].setVisible(false);
+			}
+		}
+		
+		for (int i=0;i<zombies.size();i++){
+			zombies.get(i).setTarget(null);
+		}
+		for (int i=0;i<heroes.size();i++){
+			heroes.get(i).setActionsAvailable(heroes.get(i).getMaxActions());
+			heroes.get(i).setTarget(null);
+			heroes.get(i).setSpecialAction(false);
+			p = heroes.get(i).getLocation();
+			adj = Methods.getAdjacent(p);
+			for (int j=0;j<adj.size();j++){
+				adj.get(j).setVisible(true);
+			}
+			map[heroes.get(i).getLocation().x][heroes.get(i).getLocation().y].setVisible(true);
+		}
 	}
 	
 	public static boolean checkGameOver(){
+		if (availableHeroes.size()<=0)
+			return true;
 		if (heroes.size()<=0)
 			return true;
 		return false;
 	}
-	
-	
 }

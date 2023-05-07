@@ -18,7 +18,6 @@ public class Methods {
 		if(h.getActionsAvailable()<=0) {
 			throw new NotEnoughActionsException("No more actions available");
 		}
-		h.setActionsAvailable(h.getActionsAvailable()-1);
 	}
 	public static boolean inMap(Point p){
 		if (p.x>14||p.x<0||p.y>14||p.y<0)
@@ -29,12 +28,13 @@ public class Methods {
 		ArrayList<Cell> adj = new ArrayList<Cell>();
 		int x = p.x;
 		int y = p.y;
-		for (int i=x-1;i<=x+1;i++){
-			for(int j=y-1;j<=y+1;y++){
-				if(i==x&&j==y)
-					continue;
-				if(inMap(new Point(x,y)))
-					adj.add(Game.map[i][j]);
+		for (int x1=x-1;x1<=x+1;x1++){
+			for(int y1=y-1;y1<=y+1;y1++){
+				if(x1==x&&y1==y){
+					//continue;
+				}else if(inMap(new Point(x1,y1))){
+					adj.add(Game.map[x1][y1]);
+				}
 			}
 		}
 		return adj;
@@ -42,8 +42,9 @@ public class Methods {
 	public static boolean isAdj(Point p,Character target){
 		ArrayList<Cell> adj = getAdjacent(p);
 		for(int i=0;i<adj.size();i++){
-			if(((CharacterCell)adj.get(i)).getCharacter()==target)
-				return true;
+			if(adj.get(i)instanceof CharacterCell)
+				if(((CharacterCell)adj.get(i)).getCharacter()==target)
+					return true;
 		}
 		return false;
 	}
@@ -56,12 +57,13 @@ public class Methods {
 	
 	public static Point generateRandomEmptyPoint(){
 		Point rand = Methods.generateRandomPoint();
-		Cell cell = Game.map[rand.x][rand.y];
+		Cell cell = Game.map[rand.y][rand.x];
 		while (cell instanceof CollectibleCell||
 				cell instanceof TrapCell||
-				(cell instanceof CharacterCell && ((CharacterCell)cell).getCharacter()!=null))
-				rand = Methods.generateRandomPoint();
-			
+				(cell instanceof CharacterCell && ((CharacterCell)cell).getCharacter()!=null)){
+			rand = Methods.generateRandomPoint();
+			cell = Game.map[rand.y][rand.x];
+		}
 		return rand;
 	}
 }

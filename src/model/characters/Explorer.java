@@ -18,7 +18,7 @@ public class Explorer extends Hero {
 		super.useSpecial();
 		for (int x=0;x<=14;x++){
 			for (int y=0;y<=14;y++){
-				Game.map[x][y].setVisible(true);
+				Game.map[y][x].setVisible(true);
 			}
 		}
 	}
