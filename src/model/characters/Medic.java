@@ -18,10 +18,11 @@ public class Medic extends Hero {
 	public void useSpecial() throws NoAvailableResourcesException, NotEnoughActionsException, InvalidTargetException{
 		if(super.getTarget() instanceof Zombie)
 			throw new InvalidTargetException("Cannot heal zombie");
-		if(!Methods.isAdj(super.getLocation(),super.getTarget()))
+		if(this.getLocation()!=null&&!Methods.isAdj(super.getLocation(),super.getTarget()))
 			throw new InvalidTargetException("Target out of range");
-		if(super.getTarget()==null)
-			throw new InvalidTargetException("no target is selected");
+		if(super.getTarget()==null){
+			super.setTarget(this);
+		}
 		super.useSpecial();
 		super.getTarget().setCurrentHp(getMaxHp());
 	}

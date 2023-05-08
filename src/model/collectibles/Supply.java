@@ -21,13 +21,11 @@ public class Supply implements Collectible  {
 		h.getSupplyInventory().add(this);
 	}
 	
-	public void use(Hero h) throws NoAvailableResourcesException,NotEnoughActionsException{
-		Methods.checkAvailableActions(h);
-		if(h.getSupplyInventory().size()<=0)
-			throw new NoAvailableResourcesException("Not enough supplies available");
-		for(int i=0;i<h.getSupplyInventory().size();i++){
-			if(h.getSupplyInventory().get(i)==this)
-				h.getSupplyInventory().remove(i);
-		}
+	public void use(Hero h) throws NoAvailableResourcesException,NotEnoughActionsException, InvalidTargetException{
+//		Methods.checkAvailableActions(h);
+//		if(h.getSupplyInventory().size()<=0)
+//			throw new NoAvailableResourcesException("Not enough supplies available");
+//		h.getSupplyInventory().remove(this);
+		h.useSpecial();
 	}
 }

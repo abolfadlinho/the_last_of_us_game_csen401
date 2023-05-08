@@ -130,29 +130,29 @@ public class Game {
 		Zombie zombie;
 		Character hero;
 		ArrayList<Cell> adj;
-		//All zombies attack
-		//		for(int i=0;i<zombies.size();i++){
-		//			zombies.get(i).attack();
-		//		}
-		for (int x=0;x<15;x++){
-			for(int y=0;y<15;y++){
-				cell = map[x][y];
-				if (cell instanceof CharacterCell){
-					if (((CharacterCell)cell).getCharacter() instanceof Zombie){
-						adj = Methods.getAdjacent(new Point(x,y));
-						for(int i=0;i<adj.size();i++){
-							if(adj.get(i) instanceof CharacterCell && ((CharacterCell)adj.get(i)).getCharacter() != null && !(((CharacterCell)adj.get(i)).getCharacter() instanceof Zombie)){
-								zombie = (Zombie)((CharacterCell)cell).getCharacter();
-								hero = ((CharacterCell)adj.get(i)).getCharacter();
-								zombie.setTarget(hero);
-								zombie.attack();
-								break;
-							}
-						}
-					}
-				}
-			}
+//		All zombies attack
+		for(int i=0;i<zombies.size();i++){
+			zombies.get(i).attack();
 		}
+//		for (int x=0;x<15;x++){
+//			for(int y=0;y<15;y++){
+//				cell = map[x][y];
+//				if (cell instanceof CharacterCell){
+//					if (((CharacterCell)cell).getCharacter() instanceof Zombie){
+//						adj = Methods.getAdjacent(new Point(x,y));
+//						for(int i=0;i<adj.size();i++){
+//							if(adj.get(i) instanceof CharacterCell && ((CharacterCell)adj.get(i)).getCharacter() != null && !(((CharacterCell)adj.get(i)).getCharacter() instanceof Zombie)){
+//								zombie = (Zombie)((CharacterCell)cell).getCharacter();
+//								hero = ((CharacterCell)adj.get(i)).getCharacter();
+//								zombie.setTarget(hero);
+//								zombie.attack();
+//								break;
+//							}
+//						}
+//					}
+//				}
+//			}
+//		}
 		//Spawn Zombie at random location / Cannot exceede 10 zombies said in failure 3
 		Point p;
 		if(zombies.size()<10){

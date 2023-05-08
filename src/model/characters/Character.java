@@ -82,13 +82,11 @@ public abstract class Character {
 	}
 	
 	public void attack() throws NotEnoughActionsException,InvalidTargetException{	
-		if(target==null||target==this)
+		if(target==this)
 			throw new InvalidTargetException("Cannot attack selected target");
 //		if(target.getLocation().x<location.x-1||target.getLocation().y<location.y-1||
 //		target.getLocation().x>location.x+1||target.getLocation().y>location.y+1)
-		if(!Methods.isAdj(location,target))
-			throw new InvalidTargetException("Out of location");
-		//Added because of hero class
+			//Added because of hero class
 		Character c = this.getTarget();
 		c.setCurrentHp(c.getCurrentHp()-this.getAttackDmg());
 		c.defend(this);

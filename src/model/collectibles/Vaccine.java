@@ -24,6 +24,6 @@ public class Vaccine implements Collectible {
 	}
 	
 	public void use(Hero h) throws NoAvailableResourcesException,NotEnoughActionsException,InvalidTargetException{
-		h.getVaccineInventory().remove(this);
+		h.cure();
 	}
 }

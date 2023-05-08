@@ -20,17 +20,18 @@ public class Zombie extends Character {
 	}
 	
 	public void attack() throws NotEnoughActionsException,InvalidTargetException {
-		if(super.getTarget() instanceof Zombie)
-			throw new InvalidTargetException("Friendly fire is off");
 		ArrayList<Cell> adj = Methods.getAdjacent(super.getLocation());
 		for (int i=0;i<adj.size();i++){
-			if(adj.get(i) instanceof CharacterCell && ((CharacterCell)adj.get(i)).getCharacter()!=null)
+			if(adj.get(i) instanceof CharacterCell && ((CharacterCell)adj.get(i)).getCharacter()!=null){
 				super.setTarget(((CharacterCell)adj.get(i)).getCharacter());
+				break;
+			}
 		}
-		if(super.getTarget()!=null)
+		if(super.getTarget()!=null&&!(super.getTarget() instanceof Zombie))
+		{
 			super.attack();
+		}
 	}
-	
 	
 	public void onCharacterDeath(){
 		super.onCharacterDeath();

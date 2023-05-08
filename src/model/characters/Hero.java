@@ -37,7 +37,6 @@ public abstract class Hero extends Character {
 		this.vaccineInventory = new ArrayList<Vaccine>();
 		this.supplyInventory=new ArrayList<Supply>();
 		this.specialAction=false;
-
 	}
 
 	public boolean isSpecialAction() {
@@ -71,8 +70,14 @@ public abstract class Hero extends Character {
 	}
 
 	public void attack() throws NotEnoughActionsException,InvalidTargetException {
+		if(super.getTarget()==null||super.getTarget()==this)
+			throw new InvalidTargetException("Cannot attack selected target");
 		if(super.getTarget() instanceof Hero)
 			throw new InvalidTargetException("Friendly fire is off");
+		if(super.getLocation()!=null&&!Methods.isAdj(super.getLocation(),super.getTarget()))
+		{
+			throw new InvalidTargetException("Out of location");
+		}
 		super.attack();
 		actionsAvailable--;
 	}
@@ -105,7 +110,6 @@ public abstract class Hero extends Character {
 				col.pickUp(this);
 
 			}else if(cell instanceof TrapCell){
-				System.out.println("Here");
 				int dmg = ((TrapCell)cell).getTrapDamage();
 				this.setCurrentHp(this.getCurrentHp()-dmg);
 
@@ -137,40 +141,56 @@ public abstract class Hero extends Character {
 
 	public void useSpecial() throws NoAvailableResourcesException, NotEnoughActionsException, InvalidTargetException{
 		//All uses Supply
-		setSpecialAction(true);
 		if (supplyInventory.size()<=0){
 			throw new NoAvailableResourcesException("No available supplies");
 		}else{
-			supplyInventory.get(0).use(this);
+			supplyInventory.remove(0);
 		}
+		setSpecialAction(true);
 		//without else beyedy 2 more errors
 	}
 
 	public void cure()throws NoAvailableResourcesException,InvalidTargetException, NotEnoughActionsException{
-		if(super.getTarget()==null)
+//		if(super.getTarget()==null){
+//			System.out.println("dakhalt el throw" + super.getTarget());
+//			throw new InvalidTargetException("No Target Selected");
+//		}
+//		if(super.getTarget()==null){
+//			ArrayList <Cell> adj = Methods.getAdjacent(super.getLocation());
+//			for (int i=0;i<adj.size();i++){
+//				System.out.println("adj " + i + ((CharacterCell)adj.get(i)).getCharacter());
+//				if(adj.get(i) instanceof CharacterCell &&((CharacterCell)adj.get(i)).getCharacter() instanceof Zombie){
+//					super.setTarget(((CharacterCell)adj.get(i)).getCharacter());
+//				}
+//			}
+//		}
+		if(super.getTarget()==null){
 			throw new InvalidTargetException("No Target Selected");
+		}
 		if(!(super.getTarget() instanceof Zombie))
 			throw new InvalidTargetException("Target cannot be cured");
-		//testInvalidCureNotAdjacentZombie
-		if(!Methods.isAdj(super.getLocation(),super.getTarget()))
+		this.getLocation();
+		
+//      Beysheel error el testuseMethod...Vaccine
+		if(this.getLocation()!=null&&!Methods.isAdj(this.getLocation(),this.getTarget())){
+//		if(!Methods.isAdj(this.getLocation(),this.getTarget())){
 			throw new InvalidTargetException("target is far");
+		}
 		if(this.getVaccineInventory().size()<0)
 			throw new NoAvailableResourcesException("Not enough vaccines available");
 		if(actionsAvailable<=0){
 			throw new NotEnoughActionsException("Not enough actions");
 		}
 		actionsAvailable--;
-		vaccineInventory.get(0).use(this);
+		vaccineInventory.remove(0);
 		Random random = new Random();
 		int index = random.nextInt(Game.availableHeroes.size());
 		Hero newHero = Game.availableHeroes.remove(index);
-		System.out.println("here");
 		Game.heroes.add(newHero);
 		newHero.setLocation(this.getTarget().getLocation());
 		//Revise what happens when zombie is cured
 		Game.map[this.getTarget().getLocation().x][this.getTarget().getLocation().y] = new CharacterCell(newHero);
 		Game.zombies.remove(this.getTarget());
-		super.setTarget(null);
 	}
 
 	public void onCharacterDeath(){

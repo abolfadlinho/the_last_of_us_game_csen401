@@ -32,7 +32,7 @@ public class Methods {
 			for(int y1=y-1;y1<=y+1;y1++){
 				if(x1==x&&y1==y){
 					//continue;
-				}else if(inMap(new Point(x1,y1))){
+				}else if(inMap(new Point(x1,y1))&&Game.map[x1][y1]!=null){
 					adj.add(Game.map[x1][y1]);
 				}
 			}
@@ -48,8 +48,9 @@ public class Methods {
 //		}
 //		return false;
 		if(target.getLocation().x<p.x-1||target.getLocation().y<p.y-1||
-				target.getLocation().x>p.x+1||target.getLocation().y>p.y+1)
+				target.getLocation().x>p.x+1||target.getLocation().y>p.y+1){
 			return false;
+		}
 		return true;
 	}
 	public static Point generateRandomPoint(){
