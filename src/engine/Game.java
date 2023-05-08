@@ -186,22 +186,28 @@ public class Game {
 	}
 
 	public static boolean checkGameOver(){
+		boolean vaccineOnMap = false;
 		for (int i=0;i<15;i++){
 			for (int j=0;j<15;j++){
 				if(map[i][j] instanceof CollectibleCell){
 					if(((CollectibleCell)map[i][j]).getCollectible() instanceof Vaccine)
 					{
-						return false;
+						vaccineOnMap =  true;
+						break;
 					}
 				}
 			} 
 		}
-		
+		boolean vaccineInInv = false;
 		for (int i=0;i<heroes.size();i++){
-			if(heroes.get(i).getVaccineInventory().size()>0)
-				return false;
+			if(heroes.get(i).getVaccineInventory().size()>0){
+				vaccineInInv = true;
+				break;
+			}
 		}
 		
+		if(!vaccineInInv && !vaccineOnMap&&heroes.size()<5)
+			return true;
 		
 		if (availableHeroes.size()<=0)
 			return true;
