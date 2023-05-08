@@ -34,15 +34,11 @@ public class Zombie extends Character {
 	
 	public void onCharacterDeath(){
 		super.onCharacterDeath();
-		for(int i=0;i<Game.zombies.size();i++){
-			if(Game.zombies.get(i)==this)
-				Game.zombies.remove(i);
-		}
+		Game.zombies.remove(this);
 		Zombie newZombie = new Zombie();
 		Game.zombies.add(newZombie);
 		Point rand = Methods.generateRandomEmptyPoint();	
-		Game.map[rand.y][rand.x] = new CharacterCell(newZombie);
-		ZOMBIES_COUNT--;
+		Game.map[rand.x][rand.y] = new CharacterCell(newZombie);
 		super.setLocation(rand);
 	}
 }

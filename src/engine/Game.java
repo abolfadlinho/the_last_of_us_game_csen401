@@ -21,17 +21,17 @@ import model.world.CollectibleCell;
 import model.world.TrapCell;
 
 public class Game {
-	
+
 	public static Cell [][] map ;
 	public static ArrayList <Hero> availableHeroes = new ArrayList<Hero>();
 	public static ArrayList <Hero> heroes =  new ArrayList<Hero>();
 	public static ArrayList <Zombie> zombies =  new ArrayList<Zombie>();
-	
-	
-		
+
+
+
 	public static void loadHeroes(String filePath) throws IOException {
-		
-		
+
+
 		BufferedReader br = new BufferedReader(new FileReader(filePath));
 		String line = br.readLine();
 		while (line != null) {
@@ -50,12 +50,12 @@ public class Game {
 			}
 			availableHeroes.add(hero);
 			line = br.readLine();
-			
-			
+
+
 		}
 		br.close();	
 	}
-	
+
 	public static void startGame(Hero h){
 		for(int x=0;x<15;x++){
 			for(int y=0;y<15;y++)
@@ -76,7 +76,7 @@ public class Game {
 			trapCell = new TrapCell();
 			map[p.x][p.y] = trapCell;
 		}
-		
+
 		Zombie zombie;
 		for (int i=0;i<10;i++){
 			p = Methods.generateRandomEmptyPoint();
@@ -101,37 +101,39 @@ public class Game {
 		map[1][0].setVisible(true);
 		map[1][1].setVisible(true);
 	}
-	
+
 	public static boolean checkWin(){
 		for (int i=0;i<15;i++){
 			for (int j=0;j<15;j++){
 				if(map[i][j] instanceof CollectibleCell){
 					if(((CollectibleCell)map[i][j]).getCollectible() instanceof Vaccine)
+					{
 						return false;
+					}
 				}
 			} 
 		}
 		//No vaccines on map
-		for (int i=0;i<heroes.size();i++){
-			if(heroes.get(i).getVaccineInventory().size()>0)
-				return false;
-		}
-		
+				for (int i=0;i<heroes.size();i++){
+					if(heroes.get(i).getVaccineInventory().size()>0)
+						return false;
+				}
+
 		//No vaccines in inventory
 		if (heroes.size()<5)
 			return false;
 		return true;
 	}
-	
+
 	public static void endTurn() throws NotEnoughActionsException, InvalidTargetException{
 		Cell cell;
 		Zombie zombie;
 		Character hero;
 		ArrayList<Cell> adj;
 		//All zombies attack
-//		for(int i=0;i<zombies.size();i++){
-//			zombies.get(i).attack();
-//		}
+		//		for(int i=0;i<zombies.size();i++){
+		//			zombies.get(i).attack();
+		//		}
 		for (int x=0;x<15;x++){
 			for(int y=0;y<15;y++){
 				cell = map[x][y];
@@ -166,7 +168,7 @@ public class Game {
 				map[x][y].setVisible(false);
 			}
 		}
-		
+
 		for (int i=0;i<zombies.size();i++){
 			zombies.get(i).setTarget(null);
 		}
@@ -182,8 +184,25 @@ public class Game {
 			map[heroes.get(i).getLocation().x][heroes.get(i).getLocation().y].setVisible(true);
 		}
 	}
-	
+
 	public static boolean checkGameOver(){
+		for (int i=0;i<15;i++){
+			for (int j=0;j<15;j++){
+				if(map[i][j] instanceof CollectibleCell){
+					if(((CollectibleCell)map[i][j]).getCollectible() instanceof Vaccine)
+					{
+						return false;
+					}
+				}
+			} 
+		}
+		
+		for (int i=0;i<heroes.size();i++){
+			if(heroes.get(i).getVaccineInventory().size()>0)
+				return false;
+		}
+		
+		
 		if (availableHeroes.size()<=0)
 			return true;
 		if (heroes.size()<=0)

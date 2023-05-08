@@ -92,6 +92,8 @@ public abstract class Character {
 		Character c = this.getTarget();
 		c.setCurrentHp(c.getCurrentHp()-this.getAttackDmg());
 		c.defend(this);
+		if(c.getCurrentHp()<0)
+			target = null;
 	}
 	
 	public void defend(Character c){
@@ -101,6 +103,6 @@ public abstract class Character {
 	
 	public void onCharacterDeath() {
 		Game.map[this.location.x][this.location.y] = new CharacterCell(null);
-		this.location = new Point(-2,-2);
+		
 	}
 }

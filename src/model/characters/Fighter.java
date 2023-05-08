@@ -27,6 +27,8 @@ public class Fighter extends Hero{
 	}
 	
 	public void useSpecial() throws NoAvailableResourcesException, NotEnoughActionsException, InvalidTargetException{
+		if(super.getTarget()==null)
+			throw new InvalidTargetException("no target is selected");
 		super.useSpecial();
 		attack();
 	}

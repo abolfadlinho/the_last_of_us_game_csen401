@@ -24,7 +24,10 @@ public class Supply implements Collectible  {
 	public void use(Hero h) throws NoAvailableResourcesException,NotEnoughActionsException{
 		Methods.checkAvailableActions(h);
 		if(h.getSupplyInventory().size()<=0)
-			throw new NoAvailableResourcesException("Not enough supplies available");;
-		h.getSupplyInventory().remove(0);
+			throw new NoAvailableResourcesException("Not enough supplies available");
+		for(int i=0;i<h.getSupplyInventory().size();i++){
+			if(h.getSupplyInventory().get(i)==this)
+				h.getSupplyInventory().remove(i);
+		}
 	}
 }

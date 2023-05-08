@@ -19,7 +19,9 @@ public class Medic extends Hero {
 		if(super.getTarget() instanceof Zombie)
 			throw new InvalidTargetException("Cannot heal zombie");
 		if(!Methods.isAdj(super.getLocation(),super.getTarget()))
-			throw new InvalidTargetException("omak");
+			throw new InvalidTargetException("Target out of range");
+		if(super.getTarget()==null)
+			throw new InvalidTargetException("no target is selected");
 		super.useSpecial();
 		super.getTarget().setCurrentHp(getMaxHp());
 	}

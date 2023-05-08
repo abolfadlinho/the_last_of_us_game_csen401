@@ -40,13 +40,17 @@ public class Methods {
 		return adj;
 	}
 	public static boolean isAdj(Point p,Character target){
-		ArrayList<Cell> adj = getAdjacent(p);
-		for(int i=0;i<adj.size();i++){
-			if(adj.get(i)instanceof CharacterCell)
-				if(((CharacterCell)adj.get(i)).getCharacter()==target)
-					return true;
-		}
-		return false;
+//		ArrayList<Cell> adj = getAdjacent(p);
+//		for(int i=0;i<adj.size();i++){
+//			if(adj.get(i)instanceof CharacterCell)
+//				if(((CharacterCell)adj.get(i)).getCharacter()==target)
+//					return true;
+//		}
+//		return false;
+		if(target.getLocation().x<p.x-1||target.getLocation().y<p.y-1||
+				target.getLocation().x>p.x+1||target.getLocation().y>p.y+1)
+			return false;
+		return true;
 	}
 	public static Point generateRandomPoint(){
 		Random random = new Random();
@@ -57,12 +61,12 @@ public class Methods {
 	
 	public static Point generateRandomEmptyPoint(){
 		Point rand = Methods.generateRandomPoint();
-		Cell cell = Game.map[rand.y][rand.x];
+		Cell cell = Game.map[rand.x][rand.y];
 		while (cell instanceof CollectibleCell||
 				cell instanceof TrapCell||
 				(cell instanceof CharacterCell && ((CharacterCell)cell).getCharacter()!=null)){
 			rand = Methods.generateRandomPoint();
-			cell = Game.map[rand.y][rand.x];
+			cell = Game.map[rand.x][rand.y];
 		}
 		return rand;
 	}
