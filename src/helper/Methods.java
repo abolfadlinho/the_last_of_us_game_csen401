@@ -40,13 +40,6 @@ public class Methods {
 		return adj;
 	}
 	public static boolean isAdj(Point p,Character target){
-//		ArrayList<Cell> adj = getAdjacent(p);
-//		for(int i=0;i<adj.size();i++){
-//			if(adj.get(i)instanceof CharacterCell)
-//				if(((CharacterCell)adj.get(i)).getCharacter()==target)
-//					return true;
-//		}
-//		return false;
 		if(target.getLocation().x<p.x-1||target.getLocation().y<p.y-1||
 				target.getLocation().x>p.x+1||target.getLocation().y>p.y+1){
 			return false;

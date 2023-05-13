@@ -12,6 +12,7 @@ import model.characters.Hero;
 import model.characters.Zombie;
 import model.world.CharacterCell;
 import engine.Game;
+@SuppressWarnings("unused")
 
 public class Vaccine implements Collectible {
 
@@ -24,6 +25,8 @@ public class Vaccine implements Collectible {
 	}
 	
 	public void use(Hero h) throws NoAvailableResourcesException,NotEnoughActionsException,InvalidTargetException{
+		if(h == null)
+			throw new InvalidTargetException("Cannot apply to null");
 		h.cure();
 	}
 }

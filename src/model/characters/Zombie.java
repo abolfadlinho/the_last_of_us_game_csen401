@@ -22,15 +22,14 @@ public class Zombie extends Character {
 	public void attack() throws NotEnoughActionsException,InvalidTargetException {
 		ArrayList<Cell> adj = Methods.getAdjacent(super.getLocation());
 		for (int i=0;i<adj.size();i++){
-			if(adj.get(i) instanceof CharacterCell && ((CharacterCell)adj.get(i)).getCharacter()!=null){
+			if(adj.get(i) instanceof CharacterCell && ((CharacterCell)adj.get(i)).getCharacter()!=null&&
+					!(((CharacterCell)adj.get(i)).getCharacter()instanceof Zombie)){
 				super.setTarget(((CharacterCell)adj.get(i)).getCharacter());
+				super.attack();
 				break;
 			}
 		}
-		if(super.getTarget()!=null&&!(super.getTarget() instanceof Zombie))
-		{
-			super.attack();
-		}
+		super.setTarget(null);
 	}
 	
 	public void onCharacterDeath(){
@@ -40,7 +39,8 @@ public class Zombie extends Character {
 		Game.zombies.add(newZombie);
 		Point rand = Methods.generateRandomEmptyPoint();	
 		Game.map[rand.x][rand.y] = new CharacterCell(newZombie);
-		super.setLocation(rand);
+		this.setLocation(new Point(-2,-2));
+		newZombie.setLocation(rand);
 	}
 }
 

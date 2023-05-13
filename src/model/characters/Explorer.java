@@ -1,6 +1,5 @@
 package model.characters;
 
-import helper.Methods;
 import engine.Game;
 import exceptions.InvalidTargetException;
 import exceptions.NoAvailableResourcesException;

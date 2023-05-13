@@ -74,16 +74,14 @@ public abstract class Hero extends Character {
 			throw new InvalidTargetException("Cannot attack selected target");
 		if(super.getTarget() instanceof Hero)
 			throw new InvalidTargetException("Friendly fire is off");
-		if(super.getLocation()!=null&&!Methods.isAdj(super.getLocation(),super.getTarget()))
-		{
+		if(super.getLocation()!=null && !Methods.isAdj(super.getLocation(),super.getTarget())) {
 			throw new InvalidTargetException("Out of location");
 		}
 		super.attack();
 		actionsAvailable--;
 	}
 
-	public void move(Direction d) throws NotEnoughActionsException,MovementException{
-//		if(super.getCurrentHp()>0){
+	public void move(Direction d) throws NotEnoughActionsException,MovementException {
 			Methods.checkAvailableActions(this);
 			Point loc = super.getLocation();
 			Point newLoc;
@@ -114,7 +112,6 @@ public abstract class Hero extends Character {
 				this.setCurrentHp(this.getCurrentHp()-dmg);
 
 			}
-
 			Game.map[loc.x][loc.y] = new CharacterCell(null);
 			actionsAvailable--;
 
@@ -125,61 +122,33 @@ public abstract class Hero extends Character {
 					adj.get(i).setVisible(true);
 				}
 				Game.map[newLoc.x][newLoc.y].setVisible(true);
-				//			Game.map[newLoc.x-1][newLoc.y-1].setVisible(true);
-				//			Game.map[newLoc.x-1][newLoc.y].setVisible(true);
-				//			Game.map[newLoc.x-1][newLoc.y+1].setVisible(true);
-				//			Game.map[newLoc.x][newLoc.y-1].setVisible(true);
-				//			Game.map[newLoc.x][newLoc.y+1].setVisible(true);
-				//			Game.map[newLoc.x+1][newLoc.y-1].setVisible(true);
-				//			Game.map[newLoc.x+1][newLoc.y].setVisible(true);
-				//			Game.map[newLoc.x+1][newLoc.y+1].setVisible(true);
 				super.setLocation(new Point(newLoc.x,newLoc.y));
 			}
-
-//		}
 	}
 
 	public void useSpecial() throws NoAvailableResourcesException, NotEnoughActionsException, InvalidTargetException{
-		//All uses Supply
 		if (supplyInventory.size()<=0){
 			throw new NoAvailableResourcesException("No available supplies");
 		}else{
 			supplyInventory.remove(0);
 		}
 		setSpecialAction(true);
-		//without else beyedy 2 more errors
 	}
 
-	public void cure()throws NoAvailableResourcesException,InvalidTargetException, NotEnoughActionsException{
-//		if(super.getTarget()==null){
-//			System.out.println("dakhalt el throw" + super.getTarget());
-//			throw new InvalidTargetException("No Target Selected");
-//		}
-//		if(super.getTarget()==null){
-//			ArrayList <Cell> adj = Methods.getAdjacent(super.getLocation());
-//			for (int i=0;i<adj.size();i++){
-//				System.out.println("adj " + i + ((CharacterCell)adj.get(i)).getCharacter());
-//				if(adj.get(i) instanceof CharacterCell &&((CharacterCell)adj.get(i)).getCharacter() instanceof Zombie){
-//					super.setTarget(((CharacterCell)adj.get(i)).getCharacter());
-//				}
-//			}
-//		}
+	public void cure()throws NoAvailableResourcesException,InvalidTargetException, NotEnoughActionsException {
 		if(super.getTarget()==null){
 			throw new InvalidTargetException("No Target Selected");
 		}
 		if(!(super.getTarget() instanceof Zombie))
-			throw new InvalidTargetException("Target cannot be cured");
-		this.getLocation();
-		
-//      Beysheel error el testuseMethod...Vaccine
+			throw new InvalidTargetException("Cannot cure Hero");
+		this.getLocation();		
 		if(this.getLocation()!=null&&!Methods.isAdj(this.getLocation(),this.getTarget())){
-//		if(!Methods.isAdj(this.getLocation(),this.getTarget())){
-			throw new InvalidTargetException("target is far");
+			throw new InvalidTargetException("Target is far away");
 		}
 		if(this.getVaccineInventory().size()<0)
 			throw new NoAvailableResourcesException("Not enough vaccines available");
 		if(actionsAvailable<=0){
-			throw new NotEnoughActionsException("Not enough actions");
+			throw new NotEnoughActionsException("Not enough actions available");
 		}
 		actionsAvailable--;
 		vaccineInventory.remove(0);
@@ -188,14 +157,12 @@ public abstract class Hero extends Character {
 		Hero newHero = Game.availableHeroes.remove(index);
 		Game.heroes.add(newHero);
 		newHero.setLocation(this.getTarget().getLocation());
-		//Revise what happens when zombie is cured
 		Game.map[this.getTarget().getLocation().x][this.getTarget().getLocation().y] = new CharacterCell(newHero);
 		Game.zombies.remove(this.getTarget());
 	}
 
 	public void onCharacterDeath(){
 		super.onCharacterDeath();
-
 		Game.heroes.remove(this);
 	}
 

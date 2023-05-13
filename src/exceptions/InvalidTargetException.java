@@ -1,4 +1,5 @@
 package exceptions;
+@SuppressWarnings("serial")
 
 public class InvalidTargetException extends GameActionException {
 

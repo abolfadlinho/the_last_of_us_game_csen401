@@ -1,6 +1,5 @@
 package model.characters;
 
-import helper.Methods;
 
 import java.awt.Point;
 
@@ -8,15 +7,10 @@ import java.awt.Point;
 
 
 
-import java.util.ArrayList;
-
-import model.world.Cell;
 import model.world.CharacterCell;
 import engine.Game;
 import exceptions.InvalidTargetException;
-import exceptions.NoAvailableResourcesException;
 import exceptions.NotEnoughActionsException;
-
 
 public abstract class Character {
 	private String name;
@@ -84,9 +78,6 @@ public abstract class Character {
 	public void attack() throws NotEnoughActionsException,InvalidTargetException{	
 		if(target==this)
 			throw new InvalidTargetException("Cannot attack selected target");
-//		if(target.getLocation().x<location.x-1||target.getLocation().y<location.y-1||
-//		target.getLocation().x>location.x+1||target.getLocation().y>location.y+1)
-			//Added because of hero class
 		Character c = this.getTarget();
 		c.setCurrentHp(c.getCurrentHp()-this.getAttackDmg());
 		c.defend(this);

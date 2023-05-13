@@ -1,18 +1,14 @@
 package engine;
 
 import helper.Methods;
-
 import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Random;
-
+import java.util.*;
 import exceptions.InvalidTargetException;
 import exceptions.NotEnoughActionsException;
 import model.characters.*;
-import model.characters.Character;
 import model.collectibles.Supply;
 import model.collectibles.Vaccine;
 import model.world.Cell;
@@ -22,7 +18,7 @@ import model.world.TrapCell;
 
 public class Game {
 
-	public static Cell [][] map ;
+	public static Cell [][] map;
 	public static ArrayList <Hero> availableHeroes = new ArrayList<Hero>();
 	public static ArrayList <Hero> heroes =  new ArrayList<Hero>();
 	public static ArrayList <Zombie> zombies =  new ArrayList<Zombie>();
@@ -61,10 +57,15 @@ public class Game {
 			for(int y=0;y<15;y++)
 				map[x][y] = new CharacterCell(null);
 		}
+		
+		availableHeroes.remove(h);
+		heroes.add(h);
+		h.setLocation(new Point(0,0));
+		map[0][0] = new CharacterCell(h);
+		
 		CollectibleCell col;
 		Point p;
 		TrapCell trapCell;
-		CharacterCell zombieCell;
 		for (int i=0;i<5;i++){
 			p = Methods.generateRandomEmptyPoint();
 			col = new CollectibleCell(new Vaccine());
@@ -76,7 +77,7 @@ public class Game {
 			trapCell = new TrapCell();
 			map[p.x][p.y] = trapCell;
 		}
-
+		CharacterCell zombieCell;
 		Zombie zombie;
 		for (int i=0;i<10;i++){
 			p = Methods.generateRandomEmptyPoint();
@@ -86,16 +87,7 @@ public class Game {
 			zombie.setLocation(p);
 			map[p.x][p.y] = zombieCell;
 		}
-		//Load heroes
-		for (int i=0;i<availableHeroes.size();i++){
-			//Tested it and it actually shifts elements so that no index is empty
-			if(availableHeroes.get(i)==h){
-				availableHeroes.remove(i);
-			}
-		}
-		heroes.add(h);
-		h.setLocation(new Point(0,0));
-		map[0][0] = new CharacterCell(h);
+		
 		map[0][0].setVisible(true);
 		map[0][1].setVisible(true);
 		map[1][0].setVisible(true);
@@ -113,47 +105,21 @@ public class Game {
 				}
 			} 
 		}
-		//No vaccines on map
-				for (int i=0;i<heroes.size();i++){
-					if(heroes.get(i).getVaccineInventory().size()>0)
-						return false;
-				}
-
-		//No vaccines in inventory
+		for (int i=0;i<heroes.size();i++){
+			if(heroes.get(i).getVaccineInventory().size()>0)
+				return false;
+		}
 		if (heroes.size()<5)
 			return false;
 		return true;
 	}
 
 	public static void endTurn() throws NotEnoughActionsException, InvalidTargetException{
-		Cell cell;
 		Zombie zombie;
-		Character hero;
 		ArrayList<Cell> adj;
-//		All zombies attack
 		for(int i=0;i<zombies.size();i++){
 			zombies.get(i).attack();
 		}
-//		for (int x=0;x<15;x++){
-//			for(int y=0;y<15;y++){
-//				cell = map[x][y];
-//				if (cell instanceof CharacterCell){
-//					if (((CharacterCell)cell).getCharacter() instanceof Zombie){
-//						adj = Methods.getAdjacent(new Point(x,y));
-//						for(int i=0;i<adj.size();i++){
-//							if(adj.get(i) instanceof CharacterCell && ((CharacterCell)adj.get(i)).getCharacter() != null && !(((CharacterCell)adj.get(i)).getCharacter() instanceof Zombie)){
-//								zombie = (Zombie)((CharacterCell)cell).getCharacter();
-//								hero = ((CharacterCell)adj.get(i)).getCharacter();
-//								zombie.setTarget(hero);
-//								zombie.attack();
-//								break;
-//							}
-//						}
-//					}
-//				}
-//			}
-//		}
-		//Spawn Zombie at random location / Cannot exceede 10 zombies said in failure 3
 		Point p;
 		if(zombies.size()<10){
 			p = Methods.generateRandomEmptyPoint();
@@ -162,15 +128,10 @@ public class Game {
 			map[p.x][p.y] = new CharacterCell(zombie);
 			zombie.setLocation(p);
 		}
-		//Reset Map visibilty
 		for(int x=0;x<15;x++){
 			for(int y=0;y<15;y++){
 				map[x][y].setVisible(false);
 			}
-		}
-
-		for (int i=0;i<zombies.size();i++){
-			zombies.get(i).setTarget(null);
 		}
 		for (int i=0;i<heroes.size();i++){
 			heroes.get(i).setActionsAvailable(heroes.get(i).getMaxActions());
@@ -206,7 +167,7 @@ public class Game {
 			}
 		}
 		
-		if(!vaccineInInv && !vaccineOnMap&&heroes.size()<5)
+		if(!vaccineInInv && !vaccineOnMap && heroes.size()<5)
 			return true;
 		
 		if (availableHeroes.size()<=0)
